@@ -36,7 +36,7 @@ var (
 	_ = anypb.Any{}
 	_ = sort.Sort
 
-	_ = common.Priority(0)
+	_ = common.TaskType(0)
 )
 
 // Validate checks the field values on DownloadTaskRequest with the rules
@@ -2669,6 +2669,121 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = DeleteLocalTaskRequestValidationError{}
+
+// Validate checks the field values on ExemptTaskFromGcRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ExemptTaskFromGcRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ExemptTaskFromGcRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ExemptTaskFromGcRequestMultiError, or nil if none found.
+func (m *ExemptTaskFromGcRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExemptTaskFromGcRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if utf8.RuneCountInString(m.GetTaskId()) < 1 {
+		err := ExemptTaskFromGcRequestValidationError{
+			field:  "TaskId",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for Exempt
+
+	if len(errors) > 0 {
+		return ExemptTaskFromGcRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExemptTaskFromGcRequestMultiError is an error wrapping multiple validation
+// errors returned by ExemptTaskFromGcRequest.ValidateAll() if the designated
+// constraints aren't met.
+type ExemptTaskFromGcRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExemptTaskFromGcRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExemptTaskFromGcRequestMultiError) AllErrors() []error { return m }
+
+// ExemptTaskFromGcRequestValidationError is the validation error returned by
+// ExemptTaskFromGcRequest.Validate if the designated constraints aren't met.
+type ExemptTaskFromGcRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExemptTaskFromGcRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExemptTaskFromGcRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ExemptTaskFromGcRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExemptTaskFromGcRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExemptTaskFromGcRequestValidationError) ErrorName() string {
+	return "ExemptTaskFromGcRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ExemptTaskFromGcRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExemptTaskFromGcRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExemptTaskFromGcRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExemptTaskFromGcRequestValidationError{}
 
 // Validate checks the field values on DownloadCacheTaskRequest with the rules
 // defined in the proto definition for this message. If any rules are

@@ -1232,6 +1232,10 @@ type DfdaemonDownloadClient interface {
 	StatLocalPersistentCacheTask(ctx context.Context, in *StatLocalPersistentCacheTaskRequest, opts ...grpc.CallOption) (*StatLocalPersistentCacheTaskResponse, error)
 	// ListLocalPersistentCacheTasks lists local persistent cache tasks from peer.
 	ListLocalPersistentCacheTasks(ctx context.Context, in *ListLocalPersistentCacheTasksRequest, opts ...grpc.CallOption) (*ListLocalPersistentCacheTasksResponse, error)
+	// ExemptTaskFromGc sets or clears the garbage collection exemption flag on a normal task.
+	// As long as the flag is set on a task that is locally available on the peer,
+	// that task will not be considered for eviction during a GC run.
+	ExemptTaskFromGc(ctx context.Context, in *ExemptTaskFromGcRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type dfdaemonDownloadClient struct {
@@ -1523,6 +1527,15 @@ func (c *dfdaemonDownloadClient) ListLocalPersistentCacheTasks(ctx context.Conte
 	return out, nil
 }
 
+func (c *dfdaemonDownloadClient) ExemptTaskFromGc(ctx context.Context, in *ExemptTaskFromGcRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/dfdaemon.v2.DfdaemonDownload/ExemptTaskFromGc", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DfdaemonDownloadServer is the server API for DfdaemonDownload service.
 // All implementations should embed UnimplementedDfdaemonDownloadServer
 // for forward compatibility
@@ -1569,6 +1582,10 @@ type DfdaemonDownloadServer interface {
 	StatLocalPersistentCacheTask(context.Context, *StatLocalPersistentCacheTaskRequest) (*StatLocalPersistentCacheTaskResponse, error)
 	// ListLocalPersistentCacheTasks lists local persistent cache tasks from peer.
 	ListLocalPersistentCacheTasks(context.Context, *ListLocalPersistentCacheTasksRequest) (*ListLocalPersistentCacheTasksResponse, error)
+	// ExemptTaskFromGc sets or clears the garbage collection exemption flag on a normal task.
+	// As long as the flag is set on a task that is locally available on the peer,
+	// that task will not be considered for eviction during a GC run.
+	ExemptTaskFromGc(context.Context, *ExemptTaskFromGcRequest) (*emptypb.Empty, error)
 }
 
 // UnimplementedDfdaemonDownloadServer should be embedded to have forward compatible implementations.
@@ -1637,6 +1654,9 @@ func (UnimplementedDfdaemonDownloadServer) StatLocalPersistentCacheTask(context.
 }
 func (UnimplementedDfdaemonDownloadServer) ListLocalPersistentCacheTasks(context.Context, *ListLocalPersistentCacheTasksRequest) (*ListLocalPersistentCacheTasksResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListLocalPersistentCacheTasks not implemented")
+}
+func (UnimplementedDfdaemonDownloadServer) ExemptTaskFromGc(context.Context, *ExemptTaskFromGcRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ExemptTaskFromGc not implemented")
 }
 
 // UnsafeDfdaemonDownloadServer may be embedded to opt out of forward compatibility for this service.
@@ -2040,6 +2060,24 @@ func _DfdaemonDownload_ListLocalPersistentCacheTasks_Handler(srv interface{}, ct
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DfdaemonDownload_ExemptTaskFromGc_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExemptTaskFromGcRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DfdaemonDownloadServer).ExemptTaskFromGc(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/dfdaemon.v2.DfdaemonDownload/ExemptTaskFromGc",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DfdaemonDownloadServer).ExemptTaskFromGc(ctx, req.(*ExemptTaskFromGcRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DfdaemonDownload_ServiceDesc is the grpc.ServiceDesc for DfdaemonDownload service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -2114,6 +2152,10 @@ var DfdaemonDownload_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListLocalPersistentCacheTasks",
 			Handler:    _DfdaemonDownload_ListLocalPersistentCacheTasks_Handler,
+		},
+		{
+			MethodName: "ExemptTaskFromGc",
+			Handler:    _DfdaemonDownload_ExemptTaskFromGc_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
