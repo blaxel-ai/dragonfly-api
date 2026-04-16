@@ -36,7 +36,7 @@ var (
 	_ = anypb.Any{}
 	_ = sort.Sort
 
-	_ = common.Priority(0)
+	_ = common.TaskType(0)
 )
 
 // Validate checks the field values on DownloadTaskRequest with the rules
@@ -115,7 +115,7 @@ type DownloadTaskRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DownloadTaskRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -290,7 +290,7 @@ type DownloadTaskStartedResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DownloadTaskStartedResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -433,7 +433,7 @@ type DownloadPieceFinishedResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DownloadPieceFinishedResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -669,7 +669,7 @@ type DownloadTaskResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DownloadTaskResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -804,7 +804,7 @@ type SyncPiecesRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SyncPiecesRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -961,7 +961,7 @@ type SyncPiecesResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SyncPiecesResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1093,7 +1093,7 @@ type StatTaskRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m StatTaskRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1223,7 +1223,7 @@ type StatLocalTaskRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m StatLocalTaskRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1486,7 +1486,7 @@ type StatLocalTaskResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m StatLocalTaskResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1607,7 +1607,7 @@ type ListLocalTasksRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListLocalTasksRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1743,7 +1743,7 @@ type ListLocalTasksResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListLocalTasksResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2044,7 +2044,7 @@ type ListTaskEntriesRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListTaskEntriesRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2203,7 +2203,7 @@ type ListTaskEntriesResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListTaskEntriesResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2309,7 +2309,7 @@ type EntryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m EntryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2439,7 +2439,7 @@ type DeleteTaskRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeleteTaskRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2571,7 +2571,7 @@ type DeleteLocalTaskRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeleteLocalTaskRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2636,6 +2636,121 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = DeleteLocalTaskRequestValidationError{}
+
+// Validate checks the field values on ExemptTaskFromGcRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ExemptTaskFromGcRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ExemptTaskFromGcRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ExemptTaskFromGcRequestMultiError, or nil if none found.
+func (m *ExemptTaskFromGcRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExemptTaskFromGcRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if utf8.RuneCountInString(m.GetTaskId()) < 1 {
+		err := ExemptTaskFromGcRequestValidationError{
+			field:  "TaskId",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for Exempt
+
+	if len(errors) > 0 {
+		return ExemptTaskFromGcRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExemptTaskFromGcRequestMultiError is an error wrapping multiple validation
+// errors returned by ExemptTaskFromGcRequest.ValidateAll() if the designated
+// constraints aren't met.
+type ExemptTaskFromGcRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExemptTaskFromGcRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExemptTaskFromGcRequestMultiError) AllErrors() []error { return m }
+
+// ExemptTaskFromGcRequestValidationError is the validation error returned by
+// ExemptTaskFromGcRequest.Validate if the designated constraints aren't met.
+type ExemptTaskFromGcRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExemptTaskFromGcRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExemptTaskFromGcRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ExemptTaskFromGcRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExemptTaskFromGcRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExemptTaskFromGcRequestValidationError) ErrorName() string {
+	return "ExemptTaskFromGcRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ExemptTaskFromGcRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExemptTaskFromGcRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExemptTaskFromGcRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExemptTaskFromGcRequestValidationError{}
 
 // Validate checks the field values on DownloadCacheTaskRequest with the rules
 // defined in the proto definition for this message. If any rules are
@@ -2950,7 +3065,7 @@ type DownloadCacheTaskRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DownloadCacheTaskRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3129,7 +3244,7 @@ type DownloadCacheTaskStartedResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DownloadCacheTaskStartedResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3365,7 +3480,7 @@ type DownloadCacheTaskResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DownloadCacheTaskResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3500,7 +3615,7 @@ type SyncCachePiecesRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SyncCachePiecesRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3608,7 +3723,7 @@ type SyncCachePiecesResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SyncCachePiecesResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3734,7 +3849,7 @@ type DownloadCachePieceRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DownloadCachePieceRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3895,7 +4010,7 @@ type DownloadCachePieceResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DownloadCachePieceResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -4029,7 +4144,7 @@ type StatCacheTaskRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m StatCacheTaskRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -4161,7 +4276,7 @@ type DeleteCacheTaskRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeleteCacheTaskRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -4400,7 +4515,7 @@ type DownloadPersistentTaskRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DownloadPersistentTaskRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -4507,7 +4622,7 @@ type DownloadPersistentTaskStartedResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DownloadPersistentTaskStartedResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -4730,7 +4845,7 @@ type DownloadPersistentTaskResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DownloadPersistentTaskResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -4990,7 +5105,7 @@ type UploadPersistentTaskRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UploadPersistentTaskRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -5125,7 +5240,7 @@ type UpdatePersistentTaskRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UpdatePersistentTaskRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -5258,7 +5373,7 @@ type StatPersistentTaskRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m StatPersistentTaskRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -5390,7 +5505,7 @@ type StatLocalPersistentTaskRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m StatLocalPersistentTaskRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -5650,7 +5765,7 @@ type StatLocalPersistentTaskResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m StatLocalPersistentTaskResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -5772,7 +5887,7 @@ type ListLocalPersistentTasksRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListLocalPersistentTasksRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -5911,7 +6026,7 @@ type ListLocalPersistentTasksResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListLocalPersistentTasksResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -6044,7 +6159,7 @@ type DeletePersistentTaskRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeletePersistentTaskRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -6180,7 +6295,7 @@ type SyncPersistentPiecesRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SyncPersistentPiecesRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -6338,7 +6453,7 @@ type SyncPersistentPiecesResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SyncPersistentPiecesResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -6545,7 +6660,7 @@ type DownloadPersistentCacheTaskRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DownloadPersistentCacheTaskRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -6653,7 +6768,7 @@ type DownloadPersistentCacheTaskStartedResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DownloadPersistentCacheTaskStartedResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -6891,7 +7006,7 @@ type DownloadPersistentCacheTaskResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DownloadPersistentCacheTaskResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -7132,7 +7247,7 @@ type UploadPersistentCacheTaskRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UploadPersistentCacheTaskRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -7269,7 +7384,7 @@ type UpdatePersistentCacheTaskRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UpdatePersistentCacheTaskRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -7402,7 +7517,7 @@ type StatPersistentCacheTaskRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m StatPersistentCacheTaskRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -7537,7 +7652,7 @@ type StatLocalPersistentCacheTaskRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m StatLocalPersistentCacheTaskRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -7799,7 +7914,7 @@ type StatLocalPersistentCacheTaskResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m StatLocalPersistentCacheTaskResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -7923,7 +8038,7 @@ type ListLocalPersistentCacheTasksRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListLocalPersistentCacheTasksRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -8062,7 +8177,7 @@ type ListLocalPersistentCacheTasksResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListLocalPersistentCacheTasksResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -8197,7 +8312,7 @@ type DeletePersistentCacheTaskRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeletePersistentCacheTaskRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -8335,7 +8450,7 @@ type SyncPersistentCachePiecesRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SyncPersistentCachePiecesRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -8495,7 +8610,7 @@ type SyncPersistentCachePiecesResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SyncPersistentCachePiecesResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -8620,7 +8735,7 @@ type SyncHostRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SyncHostRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -8735,7 +8850,7 @@ type IBVerbsQueuePairEndpointMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m IBVerbsQueuePairEndpointMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -8880,7 +8995,7 @@ type ExchangeIBVerbsQueuePairEndpointRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExchangeIBVerbsQueuePairEndpointRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -9026,7 +9141,7 @@ type ExchangeIBVerbsQueuePairEndpointResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExchangeIBVerbsQueuePairEndpointResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
